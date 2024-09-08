@@ -4,36 +4,118 @@
 
 ### 1.1. List the contents of the lab03-exercises repo immediately after initialization
 ```
-# paste code here
+.  ..  .git  README.md
 
 
 ```
 
 ### 1.2. Paste the output of your `git status` command
 ```
-# paste code here
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
+On branch master
 
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        README.md
+
+nothing added to commit but untracked files present (use "git add" to track)
 
 ```
 
 ### 1.3. Paste the output of the state of your repository after committing your README.md file
 ```
-# paste code here
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git add README.md
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
+On branch master
 
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   README.md
+
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git commit -m "add README.md to the repository"
+[master (root-commit) d346454] add README.md to the repository
+ 1 file changed, 18 insertions(+)
+ create mode 100644 README.md
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
+On branch master
+nothing to commit, working tree clean
 
 ```
 
 ### 1.4. Copy your `git log` output
 ```
-# paste code here
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git log
+commit d34645419c0c4ebedfcec08281668d2f77edb7e8 (HEAD -> master)
+Author: Tai Robinett <tairobinett@gmail.com>
+Date:   Thu Sep 5 10:34:45 2024 -0400
 
+    add README.md to the repository
+
+
+#Add to README.md
+##Find All Duplicates
+
+Write a function (or static method in the case of Java) that accepts a list of integers and returns a list of only those integers that appear more than once.
 
 ```
 
 ### 1.5. Copy your `git diff` output
 ```
-# paste code here
+tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git diff
+diff --git a/README.md b/README.md
+index 464d51d..55148cc 100644
+--- a/README.md
++++ b/README.md
+@@ -6,7 +6,9 @@ Running the git init command adds the .git folder to the working directory. In m
+ .  ..  HEAD  branches  config  description  hooks  info  objects  refs
+ Above are the contents of the .git folder.
 
+-1.2
++
++1.2 + 1.3
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
+ On branch master
+
+ No commits yet
+@@ -15,4 +17,37 @@ Untracked files:
+   (use "git add <file>..." to include in what will be committed)
+         README.md
+
+-nothing added to commit but untracked files present (use "git add" to track)
+\ No newline at end of file
++nothing added to commit but untracked files present (use "git add" to track)
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git add README.md
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
++On branch master
++
++No commits yet
++
++Changes to be committed:
++  (use "git rm --cached <file>..." to unstage)
++        new file:   README.md
++
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git commit -m "add README.md to the repository"
++[master (root-commit) d346454] add README.md to the repository
++ 1 file changed, 18 insertions(+)
++ create mode 100644 README.md
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git status
++On branch master
++nothing to commit, working tree clean
++
++
++1.4
++tairo@LAPTOP-7MBITRAI:~/csci338/lab03-exercises$ git log
++commit d34645419c0c4ebedfcec08281668d2f77edb7e8 (HEAD -> master)
++Author: Tai Robinett <tairobinett@gmail.com>
++Date:   Thu Sep 5 10:34:45 2024 -0400
++
++    add README.md to the repository
++
+:
 
 ```
 
@@ -42,12 +124,12 @@
 
 We've learned 6 git subcommands now. Describe each of them in your own words in the section below:
 
-* git init
-* git status 
-* git add 
-* git commit 
-* git log 
-* git diff 
+* git init: Initilaize git repository in current working directory
+* git status: Displays information about working directory, including current branch and modified file (staged and unstaged for commit)
+* git add: Add file(s) to staging area, preparing them to be committed.
+* git commit: Commit staged files. -m to include a message.
+* git log: Shows past commits
+* git diff: Compares changes between current working tree and commits
 
 
 ### 1.7. Practice: Find All Duplicates (Java)
@@ -68,11 +150,13 @@ Implement the more efficient Version of the "Find Duplicates" problem using a di
 ### 3.2. Link to Repo
 Please make sure that the new repo that you made today on GitHub is public, and paste a link to it below.
 
-```bash
-# paste your new repo link here...
-
+```
+https://github.com/tairobinett/lab03_exercises
 ```
 
 ### 3.3. What do the three "Merge pull request" options mean? 
 Describe each of them in your own words.
 
+Merge commit: Merges changes onto main branch without altering commit history. Have to manually resolve conflicts.
+Squash: Combines all commits from branch into one commit on the main branch.
+Rebase: Applies all changes onto a new target commit, usually a new, up to date version of main.
