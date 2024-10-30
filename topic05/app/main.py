@@ -1,5 +1,7 @@
-def add_nums(a: int, b: int) -> int:
-    return a + b
+from arithmetic import Arithmetic
+
+# def add_nums(a: int, b: int) -> int:
+#     return a + b
 
 
 def prompt_user_for_number() -> int:
@@ -10,7 +12,7 @@ def add_nums_from_user_input() -> None:
 
     num1 = prompt_user_for_number()
     num2 = prompt_user_for_number()
-    print(f"The sum of {num1} + {num2} is:", add_nums(num1, num2))
+    print(f"The sum of {num1} + {num2} is:", Arithmetic.add_nums(num1, num2))
 
 
 if __name__ == "__main__":
