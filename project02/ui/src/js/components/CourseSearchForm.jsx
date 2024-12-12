@@ -12,6 +12,8 @@ import {
     Space,
 } from "antd";
 
+const rootURL = "http://localhost:8000";
+
 export default function CourseSearchForm({ fetchCourses }) {
     const classificationOpts = [
         { key: "fys", value: "First Year Seminar" },
@@ -21,6 +23,18 @@ export default function CourseSearchForm({ fetchCourses }) {
         { key: "honors", value: "Honors" },
         { key: "service", value: "Service Learning" },
     ];
+
+    const [departments, setDepartments] = useState([]);
+
+    useEffect(() => {
+        async function fetchDepartments() {
+            let baseURL = `${rootURL}/api/departments/`;
+            const response = await fetch(baseURL);
+            const departments = await response.json();
+            setDepartments(departments);
+        }
+        fetchDepartments();
+    }, []);
 
     const handleFormSubmit = (formData) => {
         console.log("Here's the form data:", formData);
@@ -79,12 +93,12 @@ export default function CourseSearchForm({ fetchCourses }) {
                                 You will need to use the useEffect and useState React 
                                 functions. 
                             */}
-                            <Select.Option key="CSCI" value="CSCI">
-                                CSCI
-                            </Select.Option>
-                            <Select.Option key="NM" value="NM">
-                                NM
-                            </Select.Option>
+                            {departments.map((dept) => (
+                                <Select.Option key={dept} value={dept}>
+                                    {" "}
+                                    {dept}{" "}
+                                </Select.Option>
+                            ))}
                         </Select>
                     </Form.Item>
 
