@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, distinct
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload, selectinload
@@ -36,17 +36,24 @@ async def startup():
 @app.get("/api/departments/", response_model=List[str])
 async def get_department_codes(db: AsyncSession = Depends(get_db)):
     # replace with your code...
-    return []
-
+    result = await db.execute(
+        select(distinct(models.Course.department)).order_by(models.Course.department)
+    )
+    departments = result.scalars().all()
+    return departments
 
 # Task 2
 # Note: replace response_model=object with response_model=User once you've got this working
-@app.get("/api/users/{username}", response_model=object)
+@app.get("/api/users/{username}", response_model=List[serializers.User])
 async def get_users_by_username(
     username: str, db: AsyncSession = Depends(get_db)
 ):
     # replace with your code...
-    return {}
+    result = await db.execute(
+        select(models.User).where(models.User.username==username).order_by(models.User.username)
+    )
+    users = result.scalars().all()  # Extract distinct department names
+    return users
 
 
 # Task 3
@@ -56,6 +63,12 @@ async def get_courses(
     instructor: str = Query(None),
     department: str = Query(None),
     hours: int = Query(None),
+    days: str = Query(None),
+    di: bool = Query(None),
+    dir: bool = Query(None),
+    honors: bool = Query(None),
+    fys: bool = Query(None),
+    open_only: bool = Query(None),
     db: AsyncSession = Depends(get_db),
 ):
 
@@ -65,6 +78,46 @@ async def get_courses(
         selectinload(models.Course.instructors),
         selectinload(models.Course.location),
     )
+
+    # includes a DI filter if specified:
+    if di is not None:
+        if di:
+            query = query.where(models.Course.diversity_intensive)
+        else:
+            query = query.where(models.Course.diversity_intensive==False)
+    
+    # includes a DIR filter if specified:
+    if dir is not None:
+        if dir:
+            query = query.where(models.Course.diversity_intensive_r)
+        else:
+            query = query.where(models.Course.diversity_intensive_r==False)
+
+    # includes an honors filter if specified:
+    if honors is not None:
+        if honors:
+            query = query.where(models.Course.honors)
+        else:
+            query = query.where(models.Course.honors==False)
+
+    # includes a FYS filter if specified:
+    if fys is not None:
+        if fys:
+            query = query.where(models.Course.first_year_seminar)
+        else:
+            query = query.where(models.Course.first_year_seminar==False)
+    
+    # includes an only open courses filter if specified:
+    if open_only is not None:
+        if open_only:
+            query = query.where(models.Course.first_year_seminar)
+            # Uncomment code below to show only closed courses when open_only == false
+        # else:
+        #     query = query.where(models.Course.first_year_seminar==False)
+    
+    # includes a "days" filter if specified:
+    if days:
+        query = query.where(models.Course.days == days)
 
     # includes a "title" filter if specified:
     if title:

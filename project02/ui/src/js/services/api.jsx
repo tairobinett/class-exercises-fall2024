@@ -4,13 +4,10 @@ const rootURL = "http://localhost:8000";
 export async function fetchUser(username) {
     // replace this code with functionality that actually
     // queries that correct endpoint:
-    return {
-        id: 18,
-        username: "svanwart",
-        email: "svanwart@unca.edu",
-        first_name: "Sarah",
-        last_name: "Van Wart",
-    };
+    const response = await fetch(`${rootURL}/api/users/${username}`);
+    const data = await response.json();
+    // console.log(data[0]);
+    return data[0];
 }
 
 // React Task 3:
@@ -28,8 +25,36 @@ export async function fetchCourses(options = {}) {
     if (options.title) {
         baseURL += `title=${options.title}&`;
     }
+    if (options.days) {
+        const daysParsed = options.days.join("");
+        baseURL += `days=${daysParsed}&`;
+    }
+    if (options.classifications) {
+        if (options.classifications.includes("di")) {
+            baseURL += `di=true&`;
+        }
+        if (options.classifications.includes("dir")) {
+            baseURL += `dir=true&`;
+        }
+        if (options.classifications.includes("fys")) {
+            baseURL += `fys=true&`;
+        }
+        if (options.classifications.includes("honors")) {
+            baseURL += `honors=true&`;
+        }
+        if (options.classifications.includes("arts")) {
+            baseURL += `arts=true&`;
+        }
+        if (options.classifications.includes("service")) {
+            baseURL += `service=true&`;
+        }
+    }
+    if (options.open) {
+        baseURL += `open=true&`;
+    }
     console.log(baseURL);
     const response = await fetch(baseURL);
+    console.log("fetchCourses response: " + response);
     const courses = await response.json();
     console.log(courses);
     return courses;
